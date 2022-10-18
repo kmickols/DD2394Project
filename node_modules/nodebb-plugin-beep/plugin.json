@@ -1,0 +1,36 @@
+{
+	"id": "nodebb-plugin-beep",
+	"name": "NodeBB Censor Curse Words Plugin",
+	"description": "NodeBB Plugin that allows users to censor curse words in their posts.",
+	"url": "https://github.com/ninenine/nodebb-plugin-beep",
+	"library": "./index.js",
+	"templates":"public/templates",
+	"modules": {
+		"../admin/plugins/beep.js": "public/admin.js"
+	},
+	"hooks": [
+		{ "hook": "static:app.load", "method": "init" },
+		{ "hook": "action:settings.set", "method": "onListChange" },
+		{ "hook": "filter:admin.header.build", "method": "admin.menu" },
+
+		{ "hook": "filter:parse.post", "method": "parse", "priority": 1 },
+		{ "hook": "filter:parse.raw", "method": "parseRaw", "priority": 1 },
+		{ "hook": "filter:parse.aboutme", "method": "parseRaw" },
+		{ "hook": "filter:parse.signature", "method": "parseSignature" },
+		{ "hook": "filter:post.getFields", "method": "post.getFields"},
+
+		{ "hook": "filter:topic.create", "method": "parseTopic" },
+		{ "hook": "filter:topic.edit", "method": "parseTopic" },
+		{ "hook": "filter:tags.filter", "method": "filterTags" },
+
+		{ "hook": "filter:topic.create", "method": "checkForIllegalWords" },
+		{ "hook": "filter:topic.edit", "method": "checkForIllegalWords" },
+		{ "hook": "filter:topic.reply", "method": "checkForIllegalWords" },
+
+		{ "hook": "filter:config.get", "method": "appendConfig" },
+
+		{ "hook": "filter:messaging.getTeaser", "method": "messaging.getTeaser" }
+	],
+	"languages": "languages",
+	"defaultLang": "en_GB"
+}
