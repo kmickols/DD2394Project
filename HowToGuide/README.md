@@ -30,6 +30,7 @@ Script can be found in HowToGuide/backup.command
 
 
 ## Screenshots
-
-<Screenshot of crontab>
-<Screenshot of folders created>
+Enter crontab -e
+![alt text](https://github.com/kmickols/DD2394Project/blob/data-loss/HowToGuide/Screenshots/crontab1.png)
+Scheduling in crontab
+![alt text](https://github.com/kmickols/DD2394Project/blob/data-loss/HowToGuide/Screenshots/crontab.png)
