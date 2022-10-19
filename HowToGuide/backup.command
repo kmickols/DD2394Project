@@ -9,7 +9,7 @@ mkdir -m777 /Users/kristinmickols/Backup/$backupdate
 mongodump --db nodebb -o /Users/kristinmickols/Backup/$backupdate
 
 #Save image/file uploads in daily folder
-tar -czf /Users/kristinmickols/Backup/$backupdate /Users/kristinmickols/DD2394Project/nodebb/public/uploads 
+tar -czf /Users/kristinmickols/Backup/$backupdate/nodebb_assets.tar.gz /Users/kristinmickols/DD2394Project/public/uploads 
 
 #Remove files every 30 days, to change to X days set '+30' to '+X'
 #Uncomment to delete automatically
