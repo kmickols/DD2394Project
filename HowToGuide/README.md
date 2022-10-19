@@ -28,6 +28,16 @@ chmod u+x /path/to/backup.command
 ## Script
 Script can be found in HowToGuide/backup.command
 
+## Step by step guide
+* Ensure MongoDB database name is nodebb
+* Set up a Backup folder 
+* Gather directories for
+   * Backup folder
+   * NodeBB files
+   * Backup script
+* Change Backup & NodeBB directories in the script 
+* Set up schedule & change directories in crontab to /path/to/backup.command
+* All set.
 
 ## Screenshots
 ### Enter crontab -e
