@@ -30,7 +30,11 @@ Script can be found in HowToGuide/backup.command
 
 
 ## Screenshots
-Enter crontab -e
+### Enter crontab -e
 ![alt text](https://github.com/kmickols/DD2394Project/blob/data-loss/HowToGuide/Screenshots/crontab1.png)
-Scheduling in crontab
+### Scheduling in crontab
 ![alt text](https://github.com/kmickols/DD2394Project/blob/data-loss/HowToGuide/Screenshots/crontab.png)
+### Backup folder
+![alt text](https://github.com/kmickols/DD2394Project/blob/data-loss/HowToGuide/Screenshots/folder1.png)
+### Content of backup folder
+![alt text](https://github.com/kmickols/DD2394Project/blob/data-loss/HowToGuide/Screenshots/folder2.png)
