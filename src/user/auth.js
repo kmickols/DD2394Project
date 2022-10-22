@@ -17,26 +17,86 @@ module.exports = function (User) {
 		if (!(parseInt(uid, 10) > 0)) {
 			return;
 		}
-		const exists = await db.exists(`lockout:${uid}`);
-		if (exists) {
+		
+		// Username & IP lockout: 10 failed attempts = 24h lockout 
+		const IPandUIDExists = await db.exists(`lockout:${uid, ip}`);
+		if (IPandUIDExists) {
 			throw new Error('[[error:account-locked]]');
 		}
-		const attempts = await db.increment(`loginAttempts:${uid}`);
-		if (attempts <= meta.config.loginAttempts) {
-			return await db.pexpire(`loginAttempts:${uid}`, 1000 * 60 * 60);
+		
+		const IPandUIDAttempts = await db.increment(`loginAttempts:${uid, ip}`);
+		
+		// meta.config.loginAttempts
+		if (IPandUIDAttempts <= 10) {
+			return await db.pexpire(`loginAttempts:${uid, ip}`, 1000 * 60 * 60);
 		}
 		// Lock out the account
-		await db.set(`lockout:${uid}`, '');
-		const duration = 1000 * 60 * meta.config.lockoutDuration;
+		await db.set(`lockout:${uid, ip}`, '');
+		// meta.config.lockoutDuration
+		const IPandUIDDuration = 1000 * 60 * 60 * 24; // duration 24h
 
-		await db.delete(`loginAttempts:${uid}`);
-		await db.pexpire(`lockout:${uid}`, duration);
+		await db.delete(`loginAttempts:${uid, ip}`);
+		await db.pexpire(`lockout:${uid, ip}`, IPandUIDDuration);
 		await events.log({
 			type: 'account-locked',
 			uid: uid,
 			ip: ip,
 		});
 		throw new Error('[[error:account-locked]]');
+		
+		// Username lockout: 50 failed attempts = 24h lockout 
+		const uidExists = await db.exists(`lockout:${uid}`);
+		if (uidExists) {
+			throw new Error('[[error:account-locked]]');
+		}
+		
+		const userAttempts = await db.increment(`loginAttempts:${uid}`);
+		
+		// meta.config.loginAttempts
+		if (userAttempts <= 50) {
+			return await db.pexpire(`loginAttempts:${uid}`, 1000 * 60 * 60);
+		}
+		// Lock out the account
+		await db.set(`lockout:${uid}`, '');
+		// meta.config.lockoutDuration
+		const uidDuration = 1000 * 60 * 60 * 24; // duration 24h
+
+		await db.delete(`loginAttempts:${uid}`);
+		await db.pexpire(`lockout:${uid}`, uidDuration);
+		await events.log({
+			type: 'account-locked',
+			uid: uid,
+			ip: ip,
+		});
+		throw new Error('[[error:account-locked]]');
+		
+		
+		// IP lockout: 100 failed attempts = 24h lockout
+		
+		const ipExists = await db.exists(`lockout:${ip}`);
+		if (ipExists) {
+			throw new Error('[[error:account-locked]]');
+		}
+		const ipAttempts = await db.increment(`loginAttempts:${ip}`);
+		
+		// meta.config.loginAttempts
+		if (ipAttempts <= 100) {
+			return await db.pexpire(`loginAttempts:${ip}`, 1000 * 60 * 60);
+		}
+		// Lock out the account
+		await db.set(`lockout:${ip}`, '');
+		// meta.config.lockoutDuration
+		const ipDuration = 1000 * 60 * 60 * 24; // duration 24h
+
+		await db.delete(`loginAttempts:${ip}`);
+		await db.pexpire(`lockout:${ip}`, ipDuration);
+		await events.log({
+			type: 'account-locked',
+			uid: uid,
+			ip: ip,
+		});
+		throw new Error('[[error:account-locked]]');
+		
 	};
 
 	User.auth.getFeedToken = async function (uid) {
