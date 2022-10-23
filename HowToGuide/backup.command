@@ -13,4 +13,4 @@ tar -czf /Users/kristinmickols/Backup/$backupdate/nodebb_assets.tar.gz /Users/kr
 
 #Remove files every 30 days, to change to X days set '+30' to '+X'
 #Uncomment to delete automatically
-#find /Users/kristinmickols/Backup/ -depth -mtime '+30' -type d -exec rm -rf -- {} \;
+#find /Users/kristinmickols/Backup/backup_* -depth -mtime '+30' -type d -exec rm -rf -- {} \;
